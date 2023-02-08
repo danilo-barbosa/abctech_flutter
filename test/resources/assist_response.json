@@ -1,0 +1,32 @@
+[
+    {
+        "id": 1,
+        "name": "Serviço de Troca de aparelho",
+        "description": "Troca aparelho"
+    },
+    {
+        "id": 2,
+        "name": "Serviço de Troca de cabo",
+        "description": "Troca cabo"
+    },
+    {
+        "id": 3,
+        "name": "Serviço de Troca de fiação",
+        "description": "Troca fiação"
+    },
+    {
+        "id": 4,
+        "name": "Serviço de Manutenção em fogão",
+        "description": "Manutenção fogão"
+    },
+    {
+        "id": 5,
+        "name": "Serviço de Manutenção em geladeira",
+        "description": "Manutenção geladeira"
+    },
+    {
+        "id": 6,
+        "name": "Serviço de Manutenção em lavadora",
+        "description": "Manutenção lavadora"
+    }
+]
