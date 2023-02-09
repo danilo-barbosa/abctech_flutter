@@ -12,7 +12,11 @@ abstract class AssistProviderInterface {
 class AssistProvider extends GetConnect implements AssistProviderInterface {
   
   @override
-  Future<Response> getAssist() => get("${Constants.url}/assists");
+  Future<Response> getAssist() { 
+    
+    return get("${Constants.url}/assists");
+
+  }
 
 
 }

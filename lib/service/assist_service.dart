@@ -3,9 +3,6 @@
 import 'package:abc_tech_app/provider/assist_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-
 import '../model/assist.dart';
 
 class AssistService extends GetxService {
