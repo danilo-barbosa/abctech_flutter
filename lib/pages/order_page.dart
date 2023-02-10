@@ -19,14 +19,8 @@ class OrderPage extends GetView<OrderController> {
         ListTile(title: Text(assists[index].name)));
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold (
-      appBar: AppBar(title:  const Text("Order Form")),
-      body: Container(
-        constraints: const BoxConstraints.expand(),
-        padding: const EdgeInsets.all(10.0),
-        child: SingleChildScrollView (
+  Widget buildForm(BuildContext context) {
+    return SingleChildScrollView (
           child: Form(
             key:controller.formKey, 
             child: Column(
@@ -74,12 +68,32 @@ class OrderPage extends GetView<OrderController> {
                       Expanded(
                         child: ElevatedButton(
                           onPressed: controller.finishStartOrder,
-                          child: const Text("Finish")))
+                          child: Obx(() {
+                            if (controller.screenState.value == 
+                              OrderState.creating) {
+                                return const Text("Begin");
+                              } else {
+                                return const Text("Finish");
+                              }
+                            
+                          }))
+                      )
                     ]
                   )
               
           ],))
-        ),
+        );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold (
+      appBar: AppBar(title:  const Text("Order Form")),
+      body: Container(
+        constraints: const BoxConstraints.expand(),
+        padding: const EdgeInsets.all(10.0),
+        child: controller.obx((state) => buildForm(context),
+          onLoading: const Center(child: CircularProgressIndicator()))
       )
 
     );
