@@ -5,6 +5,7 @@ import 'package:abc_tech_app/model/order_location.dart';
 import 'package:abc_tech_app/service/geolocation_service.dart';
 import 'package:abc_tech_app/service/order_service.dart';
 import 'package:flutter/widgets.dart';
+import 'package:geolocator_platform_interface/src/models/position.dart';
 import 'package:get/get.dart';
 import '../model/assist.dart';
 import '../model/order.dart';
@@ -18,7 +19,7 @@ class OrderController extends GetxController with StateMixin {
   final operatorIdController = TextEditingController();
   final selectedAssists = <Assist>[].obs;
   final screenState = OrderState.creating.obs;
-  late Order _order;
+  final Order _order = Order(operatorId: 0,assists: [],start: null, end: null);
 
 
   OrderController(this._geolocationService,this._orderService);
@@ -48,15 +49,9 @@ class OrderController extends GetxController with StateMixin {
   finishStartOrder() {
     switch (screenState.value) {
       case OrderState.creating:
+        if (!_validateForm()) break;
         _geolocationService.getPosition().then((value){
-          OrderLocation start = OrderLocation(
-            latitude: value.latitude, 
-            longitude: value.longitude, 
-            dateTime: DateTime.now());
-          _order = Order(operatorId: int.parse(operatorIdController.text), 
-            assists: _assistToList(), 
-            start: start, 
-            end: null);
+          setOrder(value);
         });
         screenState.value = OrderState.started;
         break;
@@ -72,6 +67,34 @@ class OrderController extends GetxController with StateMixin {
         break;
       default:
     }
+  }
+
+  void setOrder(Position value) {
+    OrderLocation start = OrderLocation(
+      latitude: value.latitude, 
+      longitude: value.longitude, 
+      dateTime: DateTime.now());
+    _order.operatorId = int.parse(operatorIdController.text);
+    _order.assists = _assistToList();
+    _order.start = start;
+    _order.end = null;
+  }
+
+  bool _validateForm () {
+    var errorMessage = "";
+    if (operatorIdController.text.isEmpty)  {
+      errorMessage = "Service provider code is empty";
+    }
+    if (selectedAssists.value.isEmpty)  {
+      errorMessage = "Please choose at least one assistance.";
+    }
+    if (errorMessage.isNotEmpty) {
+      Get.snackbar("Error", errorMessage);
+      return false;    
+    }
+    
+    return true;
+    
   }
 
   void _createOrder() {
